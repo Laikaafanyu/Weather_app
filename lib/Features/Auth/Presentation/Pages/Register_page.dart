@@ -167,8 +167,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthBloc>().add(
                           RegisterRequested(
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
                           ),
                         );
                       }

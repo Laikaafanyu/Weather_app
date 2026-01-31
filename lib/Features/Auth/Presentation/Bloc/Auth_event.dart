@@ -7,14 +7,11 @@ abstract class AuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// 🔹 App start event (Phase 3)
-class AuthStarted extends AuthEvent {}
 
 class LoginRequested extends AuthEvent {
   final String email;
   final String password;
 
-  const LoginRequested(this.email, this.password);
 
   @override
   List<Object?> get props => [email, password];
@@ -24,10 +21,8 @@ class RegisterRequested extends AuthEvent {
   final String email;
   final String password;
 
-  const RegisterRequested(this.email, this.password);
 
   @override
   List<Object?> get props => [email, password];
 }
 
-class LogoutRequested extends AuthEvent {}
