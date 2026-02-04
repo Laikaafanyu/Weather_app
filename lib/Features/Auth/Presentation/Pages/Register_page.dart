@@ -167,6 +167,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthBloc>().add(
                           RegisterRequested(
+                            email: emailController.text.trim(),      // ✅ Named parameter
+                            password: passwordController.text.trim(), // ✅ Named parameter
                           ),
                         );
                       }
