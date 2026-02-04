@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'features/weather/data/repositories/weather_repository.dart';
-import 'features/weather/presentation/bloc/weather_bloc.dart';
-import 'features/weather/presentation/pages/weather_page.dart';
-
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/bloc/auth_event.dart';
 import 'features/auth/presentation/bloc/auth_state.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/register_page.dart';
+
+import 'features/weather/data/repositories/weather_repository.dart';
+import 'features/weather/presentation/bloc/weather_bloc.dart';
+import 'features/weather/presentation/pages/weather_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,18 +39,18 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Weather App',
+        title: 'weather App',
 
+        // Decide initial screen based on auth state
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthAuthenticated) {
               return const WeatherPage();
             }
-
             if (state is AuthUnauthenticated || state is AuthInitial) {
               return const LoginPage();
             }
-
+            // Loading state
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );

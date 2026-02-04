@@ -19,10 +19,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoading());
 
     try {
-      // Fetch weather from repository
+
       final Weather weather = await weatherRepository.getWeather(event.city);
 
-      // Check if forecast is empty (optional validation)
       if (weather.forecast.isEmpty) {
         emit(const WeatherError('No forecast data available for this city.'));
         return;
@@ -30,10 +29,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
       emit(WeatherLoaded(weather: weather));
     } on DioException catch (dioError) {
-      // Handle Dio-specific errors (network, timeout, etc.)
       emit(WeatherError('Network error: ${dioError.message}'));
     } catch (e) {
-      // Handle all other errors
       emit(WeatherError('Unexpected error: $e'));
     }
   }

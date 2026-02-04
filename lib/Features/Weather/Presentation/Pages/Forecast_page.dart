@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/weather_bloc.dart';
 import '../bloc/weather_state.dart';
-import '../../data/models/weather_model.dart'; // Import the correct Weather and Forecast models
+import '../../data/models/weather_model.dart'; // Import the correct weather and Forecast models
 
 class ForecastPage extends StatelessWidget {
   const ForecastPage({super.key});
