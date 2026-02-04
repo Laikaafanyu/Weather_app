@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/weather_model.dart';
 import '../../data/repositories/weather_repository.dart';
@@ -18,21 +19,22 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoading());
 
     try {
-      // Fetch real weather data from repository
+      // Fetch weather from repository
       final Weather weather = await weatherRepository.getWeather(event.city);
 
-      emit(
-        WeatherLoaded(
-          city: weather.city,
-          temperature: weather.temperature,
-          description: weather.description,
-          wind: weather.wind,
-          humidity: weather.humidity,
-          date: weather.date, // ✅ Use 'date' from model
-        ),
-      );
+      // Check if forecast is empty (optional validation)
+      if (weather.forecast.isEmpty) {
+        emit(const WeatherError('No forecast data available for this city.'));
+        return;
+      }
+
+      emit(WeatherLoaded(weather: weather));
+    } on DioException catch (dioError) {
+      // Handle Dio-specific errors (network, timeout, etc.)
+      emit(WeatherError('Network error: ${dioError.message}'));
     } catch (e) {
-      emit(WeatherError(e.toString()));
+      // Handle all other errors
+      emit(WeatherError('Unexpected error: $e'));
     }
   }
 }

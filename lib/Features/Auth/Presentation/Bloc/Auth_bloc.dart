@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutRequested>(_onLogout);
   }
 
-  /// 🔹 Check login on app start
+
   Future<void> _onAuthStarted(AuthStarted event, Emitter<AuthState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('userId');

@@ -16,12 +16,22 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   bool obscurePassword = true;
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state is AuthLoading) {
           ScaffoldMessenger.of(context)
@@ -82,7 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextFormField(
                         controller: emailController,
+                        decoration: const InputDecoration(
                           labelText: "Email",
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) =>
                         value == null || value.isEmpty
@@ -97,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: obscurePassword,
                         decoration: InputDecoration(
                           labelText: "Password",
+                          border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
                               obscurePassword
@@ -119,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
+                const SizedBox(height: 20),
 
                 SizedBox(
                   width: double.infinity,
@@ -128,10 +142,13 @@ class _LoginPageState extends State<LoginPage> {
                       if (_formKey.currentState!.validate()) {
                         context.read<AuthBloc>().add(
                           LoginRequested(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
                           ),
                         );
                       }
                     },
+                    child: const Text("Log in"),
                   ),
                 ),
 
@@ -148,6 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text(
                     "Sign up",
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
               ],

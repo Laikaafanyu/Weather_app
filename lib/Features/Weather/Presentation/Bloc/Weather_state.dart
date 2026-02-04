@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../data/models/weather_model.dart';
+import 'package:weather_app/features/weather/data/models/forecast_day.dart';
+import 'package:weather_app/features/weather/data/models/weather_model.dart';
 
 abstract class WeatherState extends Equatable {
   const WeatherState();
@@ -13,17 +14,18 @@ class WeatherInitial extends WeatherState {}
 class WeatherLoading extends WeatherState {}
 
 class WeatherLoaded extends WeatherState {
-  final Weather weather; // Store full Weather object
+  final Weather weather;
 
   const WeatherLoaded({required this.weather});
 
-  // Convenience getters for UI
+  // Convenience getters
   String get city => weather.city;
   double get temperature => weather.temperature;
   String get description => weather.description;
   double get wind => weather.wind;
   int get humidity => weather.humidity;
   DateTime get dateTime => weather.dateTime;
+  List<Forecast> get forecast => weather.forecast;
 
   @override
   List<Object?> get props => [weather];
